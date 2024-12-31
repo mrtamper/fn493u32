@@ -1,3 +1,5 @@
+repeat wait() until game:IsLoaded()
+task.wait(3)
 local keyAuth: any, ricePacksAmount
 -- safezone related
 if workspace:FindFirstChild("SafeZone") then
@@ -22,7 +24,7 @@ local houses_robbery = workspace.HouseRobb
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local HttpService = cloneref(game:GetService("HttpService"))
 local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-local TeleportService = cloneref(game:GetService("TeleportService"))
+local TeleportService = game:GetService("TeleportService")
 local function serverHop()
     if httprequest then
         local servers = {}
@@ -61,6 +63,20 @@ local function serverHop()
         print("Incompatible Exploit", "Your exploit does not support this command (missing request)")
     end
 end
+
+local TeleportCheck = false
+
+game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+    -- Ensure teleport is not triggered multiple times
+    if not TeleportCheck then
+        TeleportCheck = true
+        -- Queue the teleport script
+        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
+    end
+end)
+
+
+
 -- setting save
 function getSetting(settingName)
     local parts = {}
