@@ -71,9 +71,6 @@ game.Players.LocalPlayer.OnTeleport:Connect(function(State)
     if not TeleportCheck then
         TeleportCheck = true
         
-        -- Optional: Add a small delay (cooldown) to prevent re-triggering within a short time
-        wait(1)  -- Adjust this time to your needs (e.g., 0.5 or 1 second)
-
         -- Queue the teleport script
         queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
         
