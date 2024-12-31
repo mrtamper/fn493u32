@@ -1,5 +1,4 @@
-local amtofriceuwant = getgenv().BronxFarms.RicePacks.Amount -- just for testing
-
+local keyAuth: any, ricePacksAmount
 -- safezone related
 if workspace:FindFirstChild("SafeZone") then
     workspace.Safezone:Destroy()
@@ -62,6 +61,32 @@ local function serverHop()
         print("Incompatible Exploit", "Your exploit does not support this command (missing request)")
     end
 end
+-- setting save
+function getSetting(settingName)
+    local parts = {}
+    for part in settingName:gmatch("([^%.]+)") do
+        table.insert(parts, part)
+    end
+    local value = loadfile("BronxFarmsFree.lua")()
+    for _, part in ipairs(parts) do
+        value = value and value[part]
+    end
+    return value
+end
+
+if getgenv then
+    keyAuth = getgenv().BronxFarms and getgenv().BronxFarms.KeyAuth or getSetting('KeyAuth')
+    ricePacksAmount = getgenv().BronxFarms and getgenv().BronxFarms.RicePacks or getSetting('RicePacks')
+end
+
+local content = string.format([[ 
+    return {
+        KeyAuth = '%s',
+        RicePacks = %d,
+    }
+    ]], keyAuth, ricePacksAmount)
+    writefile('BronxFarmsFree.lua', content)
+
 
 -- Intro remover
 game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
@@ -115,6 +140,24 @@ player.OnTeleport:Connect(function(State)
 		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
 	end
 end)
+
+    player.Character.Humanoid:GetPropertyChangedSignal("Health"):Connect(
+        function()
+            -- Ensure the character's humanoid health has reached 0
+            if player.Character.Humanoid.Health == 0 then
+                -- Prompt with the message when the player dies
+                ConsoleLog:Prompt(
+                    {
+                        Title = "Player died.",
+                        Type = "fail"
+                    }
+                )
+                task.wait(1)
+                
+                serverHop()
+            end
+        end
+    )
 
 waitForPlayer() -- Ensure the player and character are loaded before proceeding
 
@@ -322,8 +365,8 @@ spawn(
 )
 
 if amtOfRiceLeft() > 0 then
-    if amtOfRiceLeft() < amtofriceuwant then
-        amtofriceuwant = amtOfRiceLeft()
+    if amtOfRiceLeft() < ricePacksAmount then
+        ricePacksAmount = amtOfRiceLeft()
     end
 end
 
@@ -377,14 +420,14 @@ else
 end
 
 -- Cook rice
-if amtOfRiceLeft() > amtofriceuwant or amtOfRiceLeft() == amtofriceuwant then
+if amtOfRiceLeft() > ricePacksAmount or amtOfRiceLeft() == ricePacksAmount then
     ConsoleLog:Prompt(
         {
-            Title = "Purchasing rice bags. [" .. amtofriceuwant .. "]",
+            Title = "Purchasing rice bags. [" .. ricePacksAmount .. "]",
             Type = "default"
         }
     )
-    PurchaseRiceBags(amtofriceuwant)
+    PurchaseRiceBags(ricePacksAmount)
     task.wait(2)
     ConsoleLog:Prompt(
         {
@@ -392,7 +435,7 @@ if amtOfRiceLeft() > amtofriceuwant or amtOfRiceLeft() == amtofriceuwant then
             Type = "default"
         }
     )
-    CookRice(amtofriceuwant)
+    CookRice(ricePacksAmount)
 else
     ConsoleLog:Prompt(
         {
