@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-task.wait(3)
+task.wait(8)
 local keyAuth: any, ricePacksAmount
 -- safezone related
 if workspace:FindFirstChild("SafeZone") then
