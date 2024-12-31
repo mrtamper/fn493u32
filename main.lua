@@ -1,4 +1,5 @@
 print('ran')
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()
 repeat wait() until game:IsLoaded()
 task.wait(8)
 local keyAuth: any, ricePacksAmount
@@ -24,7 +25,7 @@ local houses_robbery = workspace.HouseRobb
 -- server hop related
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local HttpService = cloneref(game:GetService("HttpService"))
-local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+--local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 local TeleportService = game:GetService("TeleportService")
 local function serverHop()
     if httprequest then
@@ -65,23 +66,11 @@ local function serverHop()
     end
 end
 
-local TeleportCheck = false
-
-game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-    -- Ensure teleport is not triggered multiple times
-    if not TeleportCheck then
-        TeleportCheck = true
-        
-        -- Queue the teleport script
-        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
-        
-        -- Reset TeleportCheck to allow teleporting again if needed
-        wait(5)  -- Allow teleportation after a brief period
-        TeleportCheck = false
+game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
+    if State == Enum.TeleportState.Started then
+        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
     end
 end)
-
-
 
 
 -- setting save
