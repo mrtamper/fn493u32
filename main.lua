@@ -1,5 +1,4 @@
 print('ran')
---loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()
 repeat wait() until game:IsLoaded()
 task.wait(8)
 local keyAuth: any, ricePacksAmount
@@ -25,7 +24,7 @@ local houses_robbery = workspace.HouseRobb
 -- server hop related
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local HttpService = cloneref(game:GetService("HttpService"))
---local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 local TeleportService = game:GetService("TeleportService")
 local function serverHop()
     if httprequest then
@@ -53,6 +52,8 @@ local function serverHop()
         end
 
         if #servers > 0 then
+            queueteleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua"))()')
+
             TeleportService:TeleportToPlaceInstance(
                 game.PlaceId,
                 servers[math.random(1, #servers)],
@@ -66,11 +67,6 @@ local function serverHop()
     end
 end
 
-game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
-    if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
-    end
-end)
 
 
 -- setting save
@@ -144,14 +140,6 @@ local ConsoleLog =
         "nofitication"
     },
 ]]
-
-local TeleportCheck = false
-player.OnTeleport:Connect(function(State)
-	if not TeleportCheck then
-		TeleportCheck = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/mrtamper/fn493u32/refs/heads/main/main.lua'))()")
-	end
-end)
 
     player.Character.Humanoid:GetPropertyChangedSignal("Health"):Connect(
         function()
