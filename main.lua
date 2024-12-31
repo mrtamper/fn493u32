@@ -1,3 +1,4 @@
+print('ran')
 repeat wait() until game:IsLoaded()
 task.wait(8)
 local keyAuth: any, ricePacksAmount
